@@ -15,13 +15,13 @@ const routes = [{
         path: '/',
         name: 'Login',
         component: Login,
-        meta: { requiresAuth: false },
+        meta: { requiresGuest: true },
     },
     {
         path: '/register',
         name: 'Register',
         component: Register,
-        meta: { requiresAuth: false },
+        meta: { requiresGuest: true },
     },
     {
         path: '/dashboard',
@@ -37,7 +37,7 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/About.vue'),
-        meta: { requiresAuth: true },
+        meta: { requiresGuest: true },
     },
 ];
 
@@ -49,11 +49,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-    const isAuthenticated = firebase.auth().currentUser;
-    if (requiresAuth && !isAuthenticated) {
-        return next('/');
-    } else if (!requiresAuth && isAuthenticated) {
-        return next('/dashboard');
+    const requiresGuest = to.matched.some((record) => record.meta.requiresGuest);
+
+    if (requiresAuth) {
+        if (!firebase.auth().currentUser) {
+            return next('/');
+        } else {
+            return next();
+        }
+    } else if (requiresGuest) {
+        if (firebase.auth().currentUser) {
+            return next('/dashboard');
+        } else {
+            return next();
+        }
     } else {
         return next();
     }

@@ -61,22 +61,22 @@ export default {
 
 .input-email {
   min-width: 300px;
-  min-height: 40px;
-  font-size: 1.3rem;
+  min-height: 50px;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
 .input-password {
   min-width: 300px;
-  min-height: 40px;
-  font-size: 1.3rem;
+  min-height: 50px;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
 .btn-login {
   min-width: 300px;
   min-height: 40px;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #fff;
   background: rgb(71, 71, 122);
 

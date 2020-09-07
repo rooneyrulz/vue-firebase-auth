@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link v-if="isLoggedIn" to="/dashboard">Dashboard</router-link>
-      <router-link v-if="isLoggedIn" to="/about">About</router-link>
+      <router-link v-if="!isLoggedIn" to="/about">About</router-link>
       <router-link v-if="!isLoggedIn" to="/register">Register</router-link>
       <router-link v-if="!isLoggedIn" to="/">Login</router-link>
     </div>
@@ -20,19 +20,21 @@ import Logout from './components/Logout';
 
 export default {
   name: 'App',
-  async created() {
-    await firebase
-      .auth()
-      .onAuthStateChanged((user) => (this.isLoggedIn = !!user));
-  },
   data() {
     return {
       isLoggedIn: false,
+      userEmail: null,
     };
   },
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     Logout,
+  },
+  async created() {
+    const user = await firebase.auth().currentUser;
+    if (user) {
+      this.isLoggedIn = true;
+      this.userEmail = user.email;
+    }
   },
 };
 </script>
