@@ -6,7 +6,9 @@
       <router-link to="/login">Login</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />
+    <div class="app-main">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -30,5 +32,12 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.app-main {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
 }
 </style>
