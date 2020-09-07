@@ -1,16 +1,41 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/dashboard">Dashboard</router-link> |
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/">Login</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link v-if="isLoggedIn" to="/dashboard">Dashboard</router-link>
+      <router-link v-if="isLoggedIn" to="/about">About</router-link>
+      <router-link v-if="!isLoggedIn" to="/register">Register</router-link>
+      <router-link v-if="!isLoggedIn" to="/">Login</router-link>
     </div>
+    <Logout v-if="isLoggedIn" />
     <div class="app-main">
       <router-view />
     </div>
   </div>
 </template>
+
+<script>
+// eslint-disable-next-line no-unused-vars
+import firebase from './config/firebase.config';
+import Logout from './components/Logout';
+
+export default {
+  name: 'App',
+  async created() {
+    await firebase
+      .auth()
+      .onAuthStateChanged((user) => (this.isLoggedIn = !!user));
+  },
+  data() {
+    return {
+      isLoggedIn: false,
+    };
+  },
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    Logout,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -28,6 +53,7 @@
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  padding: 10px;
 }
 
 #nav a.router-link-exact-active {
