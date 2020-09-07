@@ -23,6 +23,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
+import firebase from '../config/firebase.config';
+
 export default {
   name: 'Login',
   data() {
@@ -32,8 +35,17 @@ export default {
     };
   },
   methods: {
-    onLogin() {
-      console.log(this.email);
+    async onLogin() {
+      try {
+        const res = await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password);
+        console.log(res);
+
+        this.$router.replace({ name: 'Dashboard' });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

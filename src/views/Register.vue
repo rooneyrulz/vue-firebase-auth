@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div class="register">
     <h2>Register</h2>
@@ -22,6 +23,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
+import firebase from '../config/firebase.config';
+
 export default {
   name: 'Register',
   data() {
@@ -31,8 +35,17 @@ export default {
     };
   },
   methods: {
-    onRegister() {
-      console.log(this.email);
+    async onRegister() {
+      try {
+        const res = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password);
+        console.log(res);
+
+        this.$router.replace({ name: 'Dashboard' });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
